@@ -3,12 +3,15 @@ import { Button } from "baseui/button";
 import { Avatar } from "baseui/avatar";
 
 export default function HomePage() {
-  const [css] = useStyletron();
+  const [css, $theme] = useStyletron();
   return (
     <div
       className={css({
-        maxWidth: "650px",
-        margin: "0 auto",
+        width: "100%",
+        [$theme.mediaQuery.medium]: {
+          maxWidth: "650px",
+          margin: "0 auto",
+        },
       })}
     >
       <h2
@@ -19,8 +22,13 @@ export default function HomePage() {
       >
         Suggested for you
       </h2>
-      {Users.map((user) => (
-        <UserList userName={user.userName} name={user.name} pic={user.pic} />
+      {Users.map((user, index) => (
+        <UserList
+          key={index}
+          userName={user.userName}
+          name={user.name}
+          pic={user.pic}
+        />
       ))}
     </div>
   );

@@ -28,56 +28,17 @@ export default function Sidebar() {
     >
       <img
         className={css({
-          width: "60%",
+          width: "50%",
           marginLeft: $theme.sizing.scale500,
           marginRight: $theme.sizing.scale500,
           marginBottom: $theme.sizing.scale700,
+          display: "none",
+          [$theme.mediaQuery.large]: {
+            display: "flex",
+          },
         })}
         src="/src/assets/insta_logo1.png"
       />
-
-      {Items.map((item) => (
-        <div
-          className={css({
-            display: "flex",
-            marginLeft: $theme.sizing.scale200,
-            marginRight: $theme.sizing.scale200,
-            alignItems: "center",
-            gap: "20px",
-            width: "100%",
-          })}
-        >
-          <Button
-            onClick={() => handleNavigation(item.path)}
-            kind="tertiary"
-            overrides={{
-              BaseButton: {
-                style: {
-                  width: "100%",
-                  textTransform: "capitalize",
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "20px",
-                  ...$theme.typography.LabelLarge,
-                  justifyContent: "flex-start",
-                },
-              },
-            }}
-          >
-            {item.icon && (
-              <img
-                className={css({
-                  width: "25px",
-                  height: "25px",
-                })}
-                src={item.icon}
-                alt="image"
-              />
-            )}
-            {item.name}
-          </Button>
-        </div>
-      ))}
       <div
         className={css({
           width: "100%",
@@ -85,20 +46,28 @@ export default function Sidebar() {
           alignItems: "center",
           marginLeft: $theme.sizing.scale200,
           marginRight: $theme.sizing.scale200,
-          marginTop: $theme.sizing.scale800,
+          marginBottom: $theme.sizing.scale700,
+          [$theme.mediaQuery.large]: {
+            display: "none",
+          },
         })}
       >
         <Button
           overrides={{
             BaseButton: {
               style: {
-                width: "100%",
                 textTransform: "capitalize",
-                display: "flex",
+                display: "none",
                 alignItems: "flex-start",
                 gap: "20px",
                 ...$theme.typography.LabelLarge,
                 justifyContent: "flex-start",
+                [$theme.mediaQuery.medium]: {
+                  display: "flex",
+                },
+                [$theme.mediaQuery.large]: {
+                  display: "none",
+                },
               },
             },
           }}
@@ -108,17 +77,138 @@ export default function Sidebar() {
             className={css({
               width: "25px",
               height: "25px",
+              transition: "transform 0.3s ease-in-out",
+              ":hover": {
+                transform: "scale(1.1)",
+              },
+            })}
+            src="/src/assets/instagram.png"
+          />
+        </Button>
+      </div>
+
+      {navigation.map((item, index) => (
+        <div
+          key={index}
+          className={css({
+            display: "flex",
+            marginLeft: $theme.sizing.scale200,
+            marginRight: $theme.sizing.scale200,
+            alignItems: "center",
+            gap: "20px",
+            [$theme.mediaQuery.large]: {
+              width: "100%",
+            },
+          })}
+        >
+          <Button
+            onClick={() => handleNavigation(item.path)}
+            kind="tertiary"
+            overrides={{
+              BaseButton: {
+                style: {
+                  textTransform: "capitalize",
+                  display: "none",
+                  alignItems: "flex-start",
+                  gap: "20px",
+                  ...$theme.typography.LabelLarge,
+                  justifyContent: "flex-start",
+                  [$theme.mediaQuery.medium]: {
+                    display: "flex",
+                    width: "100%",
+                  },
+                },
+              },
+            }}
+          >
+            {item.icon && (
+              <img
+                className={css({
+                  width: "25px",
+                  height: "25px",
+                  transition: "transform 0.3s ease-in-out",
+                  ":hover": {
+                    transform: "scale(1.1)",
+                  },
+                })}
+                src={item.icon}
+                alt="image"
+              />
+            )}
+            <span
+              className={css({
+                display: "none",
+                [$theme.mediaQuery.large]: {
+                  display: "inline",
+                },
+              })}
+            >
+              {" "}
+              {item.name}
+            </span>
+          </Button>
+        </div>
+      ))}
+      <div
+        className={css({
+          display: "flex",
+          alignItems: "center",
+          marginLeft: $theme.sizing.scale200,
+          marginRight: $theme.sizing.scale200,
+          marginTop: $theme.sizing.scale800,
+          [$theme.mediaQuery.large]: {
+            width: "100%",
+          },
+        })}
+      >
+        <Button
+          overrides={{
+            BaseButton: {
+              style: {
+                textTransform: "capitalize",
+                display: "none",
+                alignItems: "flex-start",
+                gap: "20px",
+                ...$theme.typography.LabelLarge,
+                justifyContent: "flex-start",
+                [$theme.mediaQuery.medium]: {
+                  width: "100%",
+                  display: "flex",
+                },
+              },
+            },
+          }}
+          kind="tertiary"
+        >
+          <img
+            className={css({
+              width: "25px",
+              height: "25px",
+              transition: "transform 0.3s ease-in-out",
+              ":hover": {
+                transform: "scale(1.1)",
+              },
             })}
             src="/src/assets/hamburger.png"
           />
-          More
+          <span
+            className={css({
+              display: "none",
+              [$theme.mediaQuery.large]: {
+                display: "flex",
+              },
+            })}
+          >
+            {" "}
+            More
+          </span>
         </Button>
       </div>
     </div>
   );
 }
 
-const Items = [
+const navigation = [
   {
     icon: "/src/assets/home.png",
     name: "home",

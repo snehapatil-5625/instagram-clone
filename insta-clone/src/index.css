@@ -3,7 +3,7 @@
   font-weight: 400;
   font-style: normal;
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: "#000";
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -12,7 +12,7 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #000;
     background-color: #ffffff;
   }
 }
