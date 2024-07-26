@@ -1,8 +1,14 @@
 import { useStyletron } from "baseui";
 import { Button } from "baseui/button";
+import { useState } from "react";
+import SettingsPopup from "../SettingsPopup";
 
 export default function ProfileInfo() {
   const [css, $theme] = useStyletron();
+  const [isOpen, setIsOpen] = useState(false);
+  function close() {
+    setIsOpen(false);
+  }
   return (
     <div
       className={css({
@@ -71,6 +77,7 @@ export default function ProfileInfo() {
           Ad tools
         </Button>
         <Button
+          onClick={() => setIsOpen(true)}
           overrides={{
             BaseButton: {
               style: {
@@ -160,6 +167,7 @@ export default function ProfileInfo() {
         }
         service={"Product/service"}
       />
+      {isOpen && <SettingsPopup isOpen={isOpen} close={close} />}
     </div>
   );
 }

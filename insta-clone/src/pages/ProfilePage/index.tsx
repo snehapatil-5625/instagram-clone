@@ -1,8 +1,6 @@
 import { useStyletron } from "baseui";
 import ProfileInfo from "../../components/ProfileInfo";
 import Highlights from "../../components/Hightlights";
-import { StyledDivider, SIZE } from "baseui/divider";
-
 export default function ProfilePage() {
   const [css, $theme] = useStyletron();
   return (
@@ -34,8 +32,16 @@ export default function ProfilePage() {
           <ProfileInfo />
         </div>
       </div>
-      <Highlights />
-      <StyledDivider color={"#808080"} $size={SIZE.section} />
+      <Highlights label={"New"} />
+      <div
+        className={css({
+          width: "100%  ",
+          borderBottom: `1px solid ${$theme.colors.mono400}`,
+          paddingTop: $theme.sizing.scale500,
+          paddingBottom: $theme.sizing.scale500,
+          position: "relative",
+        })}
+      ></div>
     </div>
   );
 }

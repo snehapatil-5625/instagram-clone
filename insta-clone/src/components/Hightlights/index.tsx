@@ -1,18 +1,19 @@
 import { useStyletron } from "baseui";
 import { Button } from "baseui/button";
 
-export default function Highlights() {
+export default function Highlights({ label }: { label: string }) {
   const [css, $theme] = useStyletron();
   return (
     <div
       className={css({
+        width: "100%",
         display: "flex",
         flexDirection: "column",
-        paddingTop: $theme.sizing.scale500,
-        paddingBottom: $theme.sizing.scale500,
-        // alignItems: "center",
-        justifyContent: "center",
+        paddingTop: $theme.sizing.scale1200,
+        paddingBottom: $theme.sizing.scale800,
+        justifyContent: "flex-start",
         gap: $theme.sizing.scale200,
+        alignItems: "center",
       })}
     >
       <Button
@@ -24,6 +25,7 @@ export default function Highlights() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              flexDirection: "column",
               borderRadius: "50%",
               backgroundColor: $theme.colors.mono100,
               border: `1px solid ${$theme.colors.mono400}`,
@@ -43,8 +45,15 @@ export default function Highlights() {
           })}
           src="/src/assets/plus-new.png"
         />
-        <div></div>
       </Button>
+      <div
+        className={css({
+          ...$theme.typography.LabelMedium,
+          color: $theme.colors.black,
+        })}
+      >
+        {label}
+      </div>
     </div>
   );
 }
