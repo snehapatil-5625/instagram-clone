@@ -3,7 +3,8 @@ import { Client as Styletron } from "styletron-engine-monolithic";
 import { Provider as StyletronProvider } from "styletron-react";
 import { LightTheme, BaseProvider } from "baseui";
 import Router from "./Router";
-import BottomNav from "./components/BottomNavigation";
+
+import Footer from "./components/Footer";
 
 const engine = new Styletron();
 function App() {

@@ -1,9 +1,14 @@
 import { useStyletron } from "baseui";
 import { Button } from "baseui/button";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import MoreOptions from "../MoreOptions";
+import { PLACEMENT, StatefulPopover } from "baseui/popover";
 
 export default function Sidebar() {
   const [css, $theme] = useStyletron();
+  const [isOpen, setIsOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const handleNavigation = (path: any) => {
@@ -161,49 +166,84 @@ export default function Sidebar() {
           },
         })}
       >
-        <Button
+        <StatefulPopover
+          content={() => (
+            <>
+              <MoreOptions />
+            </>
+          )}
+          placement={PLACEMENT.top}
+          returnFocus
+          autoFocus
           overrides={{
-            BaseButton: {
+            Inner: {
               style: {
-                textTransform: "capitalize",
-                display: "none",
-                alignItems: "flex-start",
-                gap: "20px",
-                ...$theme.typography.LabelLarge,
+                width: "300px",
+                height: "500px",
+                backgroundColor: "#FFF",
+                padding: "15px",
+                borderRadius: "20px",
+              },
+            },
+            Body: {
+              style: {
+                marginLeft: $theme.sizing.scale500,
+                borderRadius: "20px",
+                display: "flex",
+                flexDirection: "column",
                 justifyContent: "flex-start",
-                [$theme.mediaQuery.medium]: {
-                  width: "100%",
-                  display: "flex",
-                },
               },
             },
           }}
-          kind="tertiary"
         >
-          <img
-            className={css({
-              width: "25px",
-              height: "25px",
-              transition: "transform 0.3s ease-in-out",
-              ":hover": {
-                transform: "scale(1.1)",
+          <Button
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+            overrides={{
+              BaseButton: {
+                style: {
+                  textTransform: "capitalize",
+                  display: "none",
+                  alignItems: "flex-start",
+                  gap: "20px",
+                  ...$theme.typography.LabelLarge,
+                  justifyContent: "flex-start",
+                  [$theme.mediaQuery.medium]: {
+                    width: "100%",
+                    display: "flex",
+                  },
+                },
               },
-            })}
-            src="/src/assets/hamburger.png"
-          />
-          <span
-            className={css({
-              display: "none",
-              [$theme.mediaQuery.large]: {
-                display: "flex",
-              },
-            })}
+            }}
+            kind="tertiary"
           >
-            {" "}
-            More
-          </span>
-        </Button>
+            <img
+              className={css({
+                width: "25px",
+                height: "25px",
+                transition: "transform 0.3s ease-in-out",
+                ":hover": {
+                  transform: "scale(1.1)",
+                },
+              })}
+              src="/src/assets/hamburger.png"
+            />
+            <span
+              className={css({
+                display: "none",
+                [$theme.mediaQuery.large]: {
+                  display: "flex",
+                },
+              })}
+            >
+              {" "}
+              More
+            </span>
+          </Button>
+        </StatefulPopover>
       </div>
+      {isOpen && <MoreOptions />}
     </div>
   );
 }

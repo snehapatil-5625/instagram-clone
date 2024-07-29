@@ -1,6 +1,7 @@
 import { useStyletron } from "baseui";
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
+import Footer from "../components/Footer";
 
 export default function DefaultLayout() {
   const [css, $theme] = useStyletron();
@@ -61,6 +62,7 @@ export default function DefaultLayout() {
         })}
       >
         <Outlet />
+        <Footer />
       </div>
     </div>
   );
