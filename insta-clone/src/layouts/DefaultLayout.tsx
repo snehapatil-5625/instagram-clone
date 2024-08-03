@@ -11,6 +11,7 @@ export default function DefaultLayout() {
         display: "flex",
         width: "100%",
         position: "relative",
+        height: "100%",
         paddingLeft: 0,
         paddingRight: 0,
         [$theme.mediaQuery.medium]: {
@@ -47,13 +48,19 @@ export default function DefaultLayout() {
       ></div>
       <div
         className={css({
+          display: "flex",
+          flexDirection: "column",
           width: "100%",
-          paddingRight: $theme.sizing.scale800,
+          height: "100%",
+          minHeight: "100vh",
+          paddingLeft: $theme.sizing.scale500,
+          paddingRight: $theme.sizing.scale500,
           paddingTop: $theme.sizing.scale800,
           paddingBottom: $theme.sizing.scale800,
           [$theme.mediaQuery.medium]: {
             width: "calc(100% - 80px)",
             marginLeft: "80px",
+            marginRight: $theme.sizing.scale200,
           },
           [$theme.mediaQuery.large]: {
             marginLeft: "280px",
@@ -61,7 +68,14 @@ export default function DefaultLayout() {
           },
         })}
       >
-        <Outlet />
+        <div
+          className={css({
+            flex: " 1 0 auto",
+          })}
+        >
+          <Outlet />
+        </div>
+
         <Footer />
       </div>
     </div>

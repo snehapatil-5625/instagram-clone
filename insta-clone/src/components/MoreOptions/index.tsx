@@ -3,6 +3,16 @@ import { Button } from "baseui/button";
 
 export default function MoreOptions() {
   const [css, $theme] = useStyletron();
+  const Divider = () => (
+    <div
+      className={css({
+        width: "calc(100% + 30px)",
+        height: "4px",
+        backgroundColor: $theme.colors.mono300,
+        margin: "10px -15px",
+      })}
+    />
+  );
   return (
     <div>
       <div
@@ -25,20 +35,19 @@ export default function MoreOptions() {
               alignItems: "flex-start",
             })}
           >
+            {item.name === "Threads" && <Divider />}
             <Button
               overrides={{
                 BaseButton: {
                   style: {
                     textTransform: "capitalize",
-                    display: "none",
+                    width: "100%",
+                    display: "flex",
                     alignItems: "flex-start",
                     gap: "20px",
-                    ...$theme.typography.LabelLarge,
+                    ...$theme.typography.LabelMedium,
                     justifyContent: "flex-start",
-                    [$theme.mediaQuery.medium]: {
-                      width: "100%",
-                      display: "flex",
-                    },
+                    fontWeight: 500,
                   },
                 },
               }}
@@ -47,8 +56,8 @@ export default function MoreOptions() {
               {item.icon && (
                 <img
                   className={css({
-                    width: "25px",
-                    height: "25px",
+                    width: "20px",
+                    height: "20px",
                     transition: "transform 0.3s ease-in-out",
                     ":hover": {
                       transform: "scale(1.1)",
@@ -60,15 +69,13 @@ export default function MoreOptions() {
 
               <span
                 className={css({
-                  display: "none",
-                  [$theme.mediaQuery.large]: {
-                    display: "flex",
-                  },
+                  display: "flex",
                 })}
               >
                 {item.name}
               </span>
             </Button>
+            {item.name === "Threads" && <Divider />}
           </div>
         ))}
       </div>

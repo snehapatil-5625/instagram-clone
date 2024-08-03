@@ -5,6 +5,7 @@ import { LightTheme, BaseProvider } from "baseui";
 import Router from "./Router";
 
 import Footer from "./components/Footer";
+import BottomNav from "./components/BottomNavigation";
 
 const engine = new Styletron();
 function App() {
@@ -22,6 +23,7 @@ function App() {
           },
         }}
       >
+        <BottomNav />
         <Router />
       </BaseProvider>
     </StyletronProvider>

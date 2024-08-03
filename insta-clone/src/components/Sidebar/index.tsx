@@ -178,10 +178,10 @@ export default function Sidebar() {
           overrides={{
             Inner: {
               style: {
-                width: "300px",
-                height: "500px",
+                width: "280px",
+                height: "100%",
                 backgroundColor: "#FFF",
-                padding: "15px",
+                padding: "10px",
                 borderRadius: "20px",
               },
             },
