@@ -2,6 +2,7 @@ import { useStyletron } from "baseui";
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
+import BottomNav from "../components/BottomNavigation";
 
 export default function DefaultLayout() {
   const [css, $theme] = useStyletron();
@@ -37,7 +38,7 @@ export default function DefaultLayout() {
           position: "fixed",
           left: "0px",
           top: 0,
-
+          zIndex: "-1",
           [$theme.mediaQuery.medium]: {
             left: "80px",
           },
@@ -78,6 +79,7 @@ export default function DefaultLayout() {
 
         <Footer />
       </div>
+      <BottomNav />
     </div>
   );
 }

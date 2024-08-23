@@ -1,6 +1,8 @@
 import { useStyletron } from "baseui";
 import { Button } from "baseui/button";
 import { Avatar } from "baseui/avatar";
+import { PLACEMENT, StatefulTooltip } from "baseui/tooltip";
+import ProfileView from "../../components/ProfileView";
 
 export default function HomePage() {
   const [css, $theme] = useStyletron();
@@ -16,7 +18,7 @@ export default function HomePage() {
     >
       <h2
         className={css({
-          fontSize: "18px",
+          fontSize: "16px",
           fontWeight: 600,
         })}
       >
@@ -61,31 +63,107 @@ const UserList = ({
             alignItems: "center",
           })}
         >
-          <Avatar
-            name="Jane Doe"
-            size="scale1200"
-            src="https://avatars.dicebear.com/api/human/yard.svg?width=285&mood=happy"
-          />
+          <StatefulTooltip
+            overrides={{
+              Inner: {
+                style: {
+                  backgroundColor: "#fff",
+                  border: "1px solid #fff",
+                },
+              },
+              Body: {
+                style: {
+                  width: "350px",
+                  boxShadow: $theme.lighting.shadow600,
+                  border: "1px solid #fff",
+                  backgroundColor: "#fff",
+                },
+              },
+            }}
+            content={() => <ProfileView userName={"abc_123"} name={"sneha"} />}
+            returnFocus
+            autoFocus
+            placement={PLACEMENT.bottomLeft}
+          >
+            <Button
+              overrides={{
+                BaseButton: {
+                  style: {
+                    ":hover": {
+                      backgroundColor: "none",
+                    },
+                    padding: 0,
+                  },
+                },
+              }}
+              size="mini"
+              kind="tertiary"
+            >
+              <Avatar
+                overrides={{
+                  Root: {
+                    style: {
+                      ":hover": {
+                        cursor: "pointer",
+                      },
+                    },
+                  },
+                }}
+                name="Jane Doe"
+                size="scale1200"
+                src="https://avatars.dicebear.com/api/human/yard.svg?width=285&mood=happy"
+              />
+            </Button>
+          </StatefulTooltip>
 
           <div
             className={css({
               marginLeft: $theme.sizing.scale500,
             })}
           >
-            <h4
-              className={css({
-                margin: 0,
-                fontSize: "16px",
-                fontWeight: 600,
-              })}
+            <StatefulTooltip
+              overrides={{
+                Inner: {
+                  style: {
+                    backgroundColor: "#fff",
+                    border: "1px solid #fff",
+                  },
+                },
+                Body: {
+                  style: {
+                    width: "350px",
+                    boxShadow: $theme.lighting.shadow600,
+                    border: "1px solid #fff",
+                    backgroundColor: "#fff",
+                  },
+                },
+              }}
+              content={() => (
+                <ProfileView userName={"abc_123"} name={"sneha"} />
+              )}
+              returnFocus
+              autoFocus
+              placement={PLACEMENT.bottomLeft}
             >
-              {userName}
-            </h4>
+              <h4
+                className={css({
+                  margin: 0,
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  ":hover": {
+                    cursor: "pointer",
+                  },
+                })}
+              >
+                {userName}
+              </h4>
+            </StatefulTooltip>
+
             {name && (
               <p
                 className={css({
                   margin: 0,
-                  fontSize: "15px",
+                  fontSize: "14px",
                   fontWeight: 400,
                   color: $theme.colors.mono700,
                 })}
@@ -97,7 +175,7 @@ const UserList = ({
             <p
               className={css({
                 margin: 0,
-                fontSize: "14px",
+                fontSize: "12px",
                 fontWeight: 400,
                 color: $theme.colors.mono700,
               })}

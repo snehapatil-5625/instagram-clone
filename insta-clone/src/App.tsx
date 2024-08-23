@@ -23,7 +23,6 @@ function App() {
           },
         }}
       >
-        <BottomNav />
         <Router />
       </BaseProvider>
     </StyletronProvider>
