@@ -1,12 +1,9 @@
-import * as React from "react";
 import { useStyletron } from "baseui";
+import { useNavigate } from "react-router-dom";
 
 export default function BottomNav() {
   const [css, $theme] = useStyletron();
-  // const navigate = useNavigate();
-  // const handleNavigation = (path: any) => {
-  //   navigate(path);
-  // };
+  const navigate = useNavigate();
 
   return (
     <div
@@ -28,6 +25,12 @@ export default function BottomNav() {
     >
       {nav.map((item) => (
         <div
+          onClick={() => {
+            if (item.path) {
+              navigate(item.path);
+            }
+          }}
+          key={item.path}
           className={css({
             display: "flex",
             marginLeft: $theme.sizing.scale500,

@@ -19,9 +19,9 @@ export default function ProfileInfo() {
       <div
         className={css({
           display: "flex",
-          justifyContent: "space-between",
           alignItems: "center",
           gap: "10px",
+          flexWrap: "wrap",
         })}
       >
         <p
@@ -38,13 +38,15 @@ export default function ProfileInfo() {
           overrides={{
             BaseButton: {
               style: {
-                ...$theme.typography.LabelMedium,
+                fontSize: "15px",
                 fontWeight: "bold",
+                padding: "8px 12px",
+                borderRadius: "8px",
               },
             },
           }}
           kind="secondary"
-          size="compact"
+          size="mini"
         >
           Edit profile
         </Button>
@@ -52,13 +54,15 @@ export default function ProfileInfo() {
           overrides={{
             BaseButton: {
               style: {
-                ...$theme.typography.LabelMedium,
+                fontSize: "15px",
                 fontWeight: "bold",
+                padding: "8px 12px",
+                borderRadius: "8px",
               },
             },
           }}
           kind="secondary"
-          size="compact"
+          size="mini"
         >
           View archive
         </Button>
@@ -66,13 +70,15 @@ export default function ProfileInfo() {
           overrides={{
             BaseButton: {
               style: {
-                ...$theme.typography.LabelMedium,
+                fontSize: "15px",
                 fontWeight: "bold",
+                padding: "8px 12px",
+                borderRadius: "8px",
               },
             },
           }}
           kind="secondary"
-          size="compact"
+          size="mini"
         >
           Ad tools
         </Button>
@@ -88,12 +94,12 @@ export default function ProfileInfo() {
             },
           }}
           kind="tertiary"
-          size="compact"
+          size="mini"
         >
           <img
             className={css({
-              width: "25px",
-              height: "25px",
+              width: "22px",
+              height: "22px",
             })}
             src="/src/assets/settings.png"
           />
@@ -101,14 +107,17 @@ export default function ProfileInfo() {
       </div>
       <div
         className={css({
-          display: "flex",
+          display: "none",
           gap: "30px",
           paddingTop: $theme.sizing.scale800,
+          [$theme.mediaQuery.medium]: {
+            display: "flex",
+          },
         })}
       >
         <p
           className={css({
-            ...$theme.typography.LabelLarge,
+            ...$theme.typography.LabelMedium,
             display: "flex",
             alignItems: "center",
             margin: 0,
@@ -126,7 +135,7 @@ export default function ProfileInfo() {
         </p>
         <p
           className={css({
-            ...$theme.typography.LabelLarge,
+            ...$theme.typography.LabelMedium,
             margin: 0,
             cursor: "pointer",
           })}
@@ -143,7 +152,7 @@ export default function ProfileInfo() {
         </p>
         <p
           className={css({
-            ...$theme.typography.LabelLarge,
+            ...$theme.typography.LabelMedium,
             margin: 0,
             cursor: "pointer",
           })}
@@ -196,6 +205,9 @@ const Information = ({
         <h4
           className={css({
             margin: 0,
+            ...$theme.typography.LabelMedium,
+            fontWeight: 600,
+            textTransform: "capitalize",
           })}
         >
           {name}
@@ -205,7 +217,7 @@ const Information = ({
         <p
           className={css({
             margin: 0,
-            fontSize: "15px",
+            fontSize: "14px",
             color: $theme.colors.mono700,
           })}
         >
@@ -216,7 +228,7 @@ const Information = ({
         <p
           className={css({
             margin: 0,
-            fontSize: "15px",
+            fontSize: "14px",
           })}
         >
           {des}
@@ -227,7 +239,7 @@ const Information = ({
         <p
           className={css({
             margin: 0,
-            fontSize: "15px",
+            fontSize: "14px",
             color: $theme.colors.mono700,
           })}
         >
@@ -238,7 +250,7 @@ const Information = ({
       <p
         className={css({
           marginTop: $theme.sizing.scale500,
-          fontSize: "15px",
+          fontSize: "14px",
         })}
       >
         1 account reached in the last 30 days.{" "}

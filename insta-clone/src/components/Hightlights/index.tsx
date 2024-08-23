@@ -11,48 +11,56 @@ export default function Highlights({ label }: { label: string }) {
         flexDirection: "column",
         paddingTop: $theme.sizing.scale1200,
         paddingBottom: $theme.sizing.scale800,
-        justifyContent: "flex-start",
-        gap: $theme.sizing.scale200,
-        alignItems: "center",
+        alignItems: "flex-start",
       })}
     >
-      <Button
-        overrides={{
-          BaseButton: {
-            style: {
-              width: "90px",
-              height: "90px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              borderRadius: "50%",
-              backgroundColor: $theme.colors.mono100,
-              border: `1px solid ${$theme.colors.mono400}`,
-              ":hover": {
-                backgroundColor: "none",
-              },
-            },
-          },
-        }}
-        shape="circle"
-        size="large"
-        kind="tertiary"
-      >
-        <img
-          className={css({
-            width: "80px",
-          })}
-          src="/src/assets/plus-new.png"
-        />
-      </Button>
       <div
         className={css({
-          ...$theme.typography.LabelMedium,
-          color: $theme.colors.black,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "15px",
         })}
       >
-        {label}
+        <Button
+          overrides={{
+            BaseButton: {
+              style: {
+                // width: "90px",
+                // height: "90px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                borderRadius: "50%",
+                // backgroundColor: $theme.colors.mono100,
+                // border: `1px solid ${$theme.colors.mono400}`,
+                ":hover": {
+                  backgroundColor: "none",
+                },
+              },
+            },
+          }}
+          shape="circle"
+          size="large"
+          kind="tertiary"
+        >
+          <img
+            className={css({
+              width: "80px",
+            })}
+            src="/src/assets/file.png"
+          />
+        </Button>
+        <div
+          className={css({
+            ...$theme.typography.LabelSmall,
+            color: $theme.colors.black,
+            fontWeight: 600,
+          })}
+        >
+          {label}
+        </div>
       </div>
     </div>
   );

@@ -11,7 +11,17 @@ export default function SettingsPopup({
   const [css, $theme] = useStyletron();
   return (
     <div>
-      <Modal onClose={close} isOpen={isOpen}>
+      <Modal
+        overrides={{
+          Dialog: {
+            style: {
+              maxWidth: "400px",
+            },
+          },
+        }}
+        onClose={close}
+        isOpen={isOpen}
+      >
         <div
           className={css({
             width: "100%",
@@ -28,8 +38,8 @@ export default function SettingsPopup({
                   index < List.length - 1
                     ? `1px solid ${$theme.colors.mono500}`
                     : "none",
-                paddingTop: $theme.sizing.scale600,
-                paddingBottom: $theme.sizing.scale600,
+                paddingTop: $theme.sizing.scale550,
+                paddingBottom: $theme.sizing.scale550,
                 cursor: "pointer",
               })}
             >

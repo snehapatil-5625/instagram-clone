@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Footer() {
   const [css, $theme] = useStyletron();
-  const [value, setValue] = React.useState<Value>([]);
+  const [value, setValue] = React.useState<Value>([{ id: "English" }]);
   return (
     <div
       className={css({
@@ -16,7 +16,6 @@ export default function Footer() {
       <div
         className={css({
           display: "none",
-
           [$theme.mediaQuery.medium]: {
             width: "100%",
             display: "flex",
@@ -38,7 +37,7 @@ export default function Footer() {
               href={item.href}
               className={css({
                 color: $theme.colors.mono700,
-                ...$theme.typography.LabelSmall,
+                fontSize: "12px",
                 textDecoration: "none",
               })}
             >
@@ -84,7 +83,7 @@ export default function Footer() {
         />
         <p
           className={css({
-            ...$theme.typography.LabelSmall,
+            fontSize: "12px",
             color: $theme.colors.mono700,
             margin: 0,
             whiteSpace: "nowrap",
