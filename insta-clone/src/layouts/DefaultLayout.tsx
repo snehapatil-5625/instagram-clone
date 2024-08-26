@@ -56,8 +56,8 @@ export default function DefaultLayout() {
           minHeight: "100vh",
           paddingLeft: $theme.sizing.scale500,
           paddingRight: $theme.sizing.scale500,
-          paddingTop: $theme.sizing.scale800,
-          paddingBottom: $theme.sizing.scale800,
+          //  paddingTop: $theme.sizing.scale800,
+          //paddingBottom: $theme.sizing.scale800,
           [$theme.mediaQuery.medium]: {
             width: "calc(100% - 80px)",
             marginLeft: "80px",
