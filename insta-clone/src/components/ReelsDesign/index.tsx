@@ -2,8 +2,24 @@ import { useStyletron } from "baseui";
 import { Avatar } from "baseui/avatar";
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
-import { Card, StyledBody, StyledAction } from "baseui/card";
+import {
+  Bookmark,
+  Heart,
+  MessageCircle,
+  MoreHorizontal,
+  Share2,
+  Volume2,
+} from "lucide-react";
 
+interface ReelsDesignProps {
+  videoSrc: string;
+  text: string;
+  profileImage: string;
+  username: string;
+  likes: string;
+  comments: string;
+  audioTitle: string;
+}
 export default function ReelsDesign({
   videoSrc,
   text,
@@ -11,102 +27,148 @@ export default function ReelsDesign({
   username,
   likes,
   comments,
-}: any) {
-  const [css, $theme] = useStyletron();
+  audioTitle,
+}: ReelsDesignProps) {
+  const [css] = useStyletron();
+
   return (
     <div
       className={css({
         width: "100%",
-        height: "100%",
+        height: "100vh",
         position: "relative",
-        // boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)",
+        backgroundColor: "black",
+        overflow: "hidden",
       })}
     >
-      <Card
-        overrides={{
-          Root: {
-            style: {
-              position: "relative",
-              width: "100%",
-              height: "100%",
-              border: "none",
-              borderRadius: "none",
-              //textAlign: "center",
-            },
+      {/* Video Container with Gradient Overlay */}
+      <div
+        className={css({
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          ":before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background:
+              "linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.2) 100%)",
+            zIndex: 1,
           },
-        }}
+        })}
       >
-        <div
+        <video
           className={css({
-            position: "relative",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
           })}
+          src={videoSrc}
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+      </div>
+
+      {/* Content Overlay */}
+      <div
+        className={css({
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 2,
+        })}
+      >
+        {/* Top Controls */}
+        <Block
+          position="absolute"
+          top="16px"
+          right="16px"
+          display="flex"
+          alignItems="center"
         >
-          <video
-            style={{
-              width: "90%",
-              height: "100%",
-              objectFit: "fill",
-            }}
-            src={videoSrc}
-            controls
-            autoPlay
-            loop
-          />
-          <Block
+          <Button
+            kind="tertiary"
+            size="mini"
             overrides={{
-              Block: {
+              BaseButton: {
                 style: {
-                  position: "absolute",
-                  bottom: "160px",
-                  textalign: "center",
-                  color: "#fff",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  fontSize: "18px",
-                  fontWeight: "bold",
-                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)",
+                  backgroundColor: "transparent",
+                  color: "white",
                 },
               },
             }}
           >
-            {text}
-          </Block>
-          <Block
-            overrides={{
-              Block: {
-                style: {
-                  position: "absolute",
-                  bottom: "20px",
-                  left: "16px",
+            <Volume2 size={24} />
+          </Button>
+        </Block>
+
+        {/* Right Side Actions */}
+        <Block
+          position="absolute"
+          right="8px"
+          bottom="120px"
+          display="flex"
+          flexDirection="column"
+          // gap="16px"
+        >
+          <ActionButton icon={<Heart size={28} />} label={likes} />
+          <ActionButton icon={<MessageCircle size={28} />} label={comments} />
+          <ActionButton icon={<Share2 size={28} />} />
+          <ActionButton icon={<Bookmark size={28} />} />
+          <ActionButton icon={<MoreHorizontal size={28} />} />
+        </Block>
+
+        {/* Bottom Content */}
+        <Block position="absolute" bottom="0" left="0" right="0" padding="16px">
+          {/* User Info */}
+          <Block display="flex" alignItems="center" marginBottom="12px">
+            <Avatar
+              name={username}
+              size="scale1000"
+              src={profileImage}
+              overrides={{
+                Root: {
+                  style: {
+                    border: "2px solid white",
+                  },
+                },
+              }}
+            />
+            <Block marginLeft="12px" marginRight="auto">
+              <Block
+                color="white"
+                className={css({
+                  fontSize: "15px",
+                  fontWeight: 600,
                   display: "flex",
                   alignItems: "center",
-                  color: "#fff",
-                },
-              },
-            }}
-          >
-            <Avatar name={username} src={profileImage} size="scale1200" />
-            <div
-              className={css({
-                color: "#fff",
-                fontSize: "18px",
-              })}
-            >
-              {username}
-            </div>
+                  gap: "8px",
+                })}
+              >
+                {username}
+              </Block>
+            </Block>
             <Button
+              size="compact"
               overrides={{
                 BaseButton: {
                   style: {
-                    marginLeft: "8px",
-                    backgroundColor: "white",
-                    color: "black",
-                    borderRadius: "20px",
-                    paddingLeft: "12px",
-                    paddingRight: "12px",
-                    fontSize: "14px",
+                    borderRadius: "4px",
+                    backgroundColor: "#3797EF",
+                    color: "white",
+                    ":hover": {
+                      backgroundColor: "#3797EF",
+                      opacity: 0.9,
+                    },
                   },
                 },
               }}
@@ -114,89 +176,88 @@ export default function ReelsDesign({
               Follow
             </Button>
           </Block>
-        </div>
-        <div>
+
+          {/* Caption */}
           <Block
-            overrides={{
-              Block: {
-                style: {
-                  position: "absolute",
-                  right: "0px",
-                  bottom: "80px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  color: "#fff",
-                  gap: "20px",
-                },
-              },
-            }}
+            color="white"
+            marginBottom="8px"
+            className={css({
+              fontSize: "14px",
+              lineHeight: "1.4",
+              textShadow: "0 1px 2px rgba(0,0,0,0.2)",
+            })}
           >
-            <Button
-              overrides={{
-                BaseButton: {
-                  style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    fontSize: "14px",
-                  },
-                },
-              }}
-              kind="tertiary"
-              size="mini"
-            >
-              <img
-                className={css({
-                  width: "22px",
-                  height: "22px",
-                })}
-                src="/src/assets/favorite.png"
-              />
-              {likes}
-            </Button>
-            <Button
-              overrides={{
-                BaseButton: {
-                  style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    fontSize: "14px",
-                  },
-                },
-              }}
-              size="mini"
-              kind="tertiary"
-            >
-              <img
-                className={css({
-                  width: "22px",
-                  height: "22px",
-                })}
-                src="/src/assets/chat.png"
-              />
-              {comments}
-            </Button>
-            <Button kind="tertiary" size="mini">
-              <img
-                className={css({
-                  width: "22px",
-                  height: "22px",
-                })}
-                src="/src/assets/send.png"
-              />
-            </Button>
-            <Button kind="tertiary" size="mini">
-              <img
-                src="/src/assets/bookmark.png"
-                className={css({
-                  width: "22px",
-                  height: "22px",
-                })}
-              />
-            </Button>
+            {text}
           </Block>
-        </div>
-      </Card>
+
+          {/* Audio Attribution */}
+          <Block
+            display="flex"
+            alignItems="center"
+            color="white"
+            marginTop="8px"
+            className={css({
+              fontSize: "14px",
+              opacity: 0.9,
+              textShadow: "0 1px 2px rgba(0,0,0,0.2)",
+            })}
+          >
+            <span className={css({ marginRight: "4px" })}>♪</span>
+            {audioTitle}
+          </Block>
+        </Block>
+      </div>
+    </div>
+  );
+}
+
+function ActionButton({
+  icon,
+  label,
+}: {
+  icon: React.ReactNode;
+  label?: string;
+}) {
+  const [css] = useStyletron();
+  return (
+    <div
+      className={css({
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "4px",
+      })}
+    >
+      <Button
+        kind="tertiary"
+        size="mini"
+        overrides={{
+          BaseButton: {
+            style: {
+              backgroundColor: "transparent",
+              color: "white",
+              padding: "4px",
+              ":hover": {
+                backgroundColor: "rgba(255,255,255,0.1)",
+              },
+            },
+          },
+        }}
+      >
+        {icon}
+      </Button>
+      {label && (
+        <span
+          className={css({
+            color: "white",
+            fontSize: "13px",
+            fontWeight: 600,
+            textShadow: "0 1px 2px rgba(0,0,0,0.2)",
+          })}
+        >
+          {label}
+        </span>
+      )}
     </div>
   );
 }
