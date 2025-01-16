@@ -36,12 +36,10 @@ export default function ReelsDesign({
       className={css({
         width: "100%",
         height: "100vh",
+        backgroundColor: "#FFFFFF80",
         position: "relative",
-        backgroundColor: "black",
-        overflow: "hidden",
       })}
     >
-      {/* Video Container with Gradient Overlay */}
       <div
         className={css({
           position: "absolute",
@@ -87,7 +85,6 @@ export default function ReelsDesign({
           zIndex: 2,
         })}
       >
-        {/* Top Controls */}
         <Block
           position="absolute"
           top="16px"
@@ -101,31 +98,18 @@ export default function ReelsDesign({
             overrides={{
               BaseButton: {
                 style: {
-                  backgroundColor: "transparent",
+                  backgroundColor: "#FFFFFF80",
                   color: "white",
+                  borderRadius: "50%",
                 },
               },
             }}
           >
-            <Volume2 size={24} />
+            <Volume2 size={20} />
           </Button>
         </Block>
 
         {/* Right Side Actions */}
-        <Block
-          position="absolute"
-          right="8px"
-          bottom="120px"
-          display="flex"
-          flexDirection="column"
-          // gap="16px"
-        >
-          <ActionButton icon={<Heart size={28} />} label={likes} />
-          <ActionButton icon={<MessageCircle size={28} />} label={comments} />
-          <ActionButton icon={<Share2 size={28} />} />
-          <ActionButton icon={<Bookmark size={28} />} />
-          <ActionButton icon={<MoreHorizontal size={28} />} />
-        </Block>
 
         {/* Bottom Content */}
         <Block position="absolute" bottom="0" left="0" right="0" padding="16px">
@@ -158,15 +142,18 @@ export default function ReelsDesign({
               </Block>
             </Block>
             <Button
-              size="compact"
+              size="mini"
               overrides={{
                 BaseButton: {
                   style: {
                     borderRadius: "4px",
-                    backgroundColor: "#3797EF",
+                    border: "1px solid white",
+                    backgroundColor: "transparent",
                     color: "white",
+                    fontSize: "12px",
+                    fontWeight: "600",
                     ":hover": {
-                      backgroundColor: "#3797EF",
+                      backgroundColor: "transparent",
                       opacity: 0.9,
                     },
                   },
@@ -207,6 +194,23 @@ export default function ReelsDesign({
           </Block>
         </Block>
       </div>
+      <Block
+        position="absolute"
+        right="-60px"
+        bottom="10px"
+        display="flex"
+        flexDirection="column"
+        gridRowGap="20px"
+      >
+        <ActionButton icon={<Heart size={28} color="#000" />} label={likes} />
+        <ActionButton
+          icon={<MessageCircle size={28} color="#000" />}
+          label={comments}
+        />
+        <ActionButton icon={<Share2 size={28} color="#000" />} />
+        <ActionButton icon={<Bookmark size={28} color="#000" />} />
+        <ActionButton icon={<MoreHorizontal size={28} color="#000" />} />
+      </Block>
     </div>
   );
 }
@@ -249,7 +253,7 @@ function ActionButton({
       {label && (
         <span
           className={css({
-            color: "white",
+            color: "black",
             fontSize: "13px",
             fontWeight: 600,
             textShadow: "0 1px 2px rgba(0,0,0,0.2)",
