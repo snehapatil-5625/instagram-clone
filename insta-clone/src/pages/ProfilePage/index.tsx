@@ -2,6 +2,7 @@ import { useStyletron } from "baseui";
 import ProfileInfo from "../../components/ProfileInfo";
 import Highlights from "../../components/Hightlights";
 import FollowersDesign from "../../components/FollowersDesign";
+import ProfileGrid from "../../components/ProfileGrid";
 export default function ProfilePage() {
   const [css, $theme] = useStyletron();
   return (
@@ -52,6 +53,8 @@ export default function ProfilePage() {
         </div>
       </div>
       <Highlights label={"New"} />
+
+      <ProfileGrid />
       <div
         className={css({
           display: "block",
@@ -63,6 +66,7 @@ export default function ProfilePage() {
       >
         <FollowersDesign />
       </div>
+
       <div
         className={css({
           width: "calc(100% + 24px)",
