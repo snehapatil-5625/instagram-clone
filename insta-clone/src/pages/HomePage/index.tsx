@@ -3,36 +3,42 @@ import { Button } from "baseui/button";
 import { Avatar } from "baseui/avatar";
 import { PLACEMENT, StatefulTooltip } from "baseui/tooltip";
 import ProfileView from "../../components/ProfileView";
+import CustomTooltip from "../../components/customTooltip";
+import TooltipExample from "../../components/customTooltip";
 
 export default function HomePage() {
   const [css, $theme] = useStyletron();
   return (
-    <div
-      className={css({
-        width: "100%",
-        [$theme.mediaQuery.medium]: {
-          maxWidth: "650px",
-          margin: "0 auto",
-        },
-      })}
-    >
-      <h2
+    <>
+      {" "}
+      <TooltipExample />
+      <div
         className={css({
-          fontSize: "16px",
-          fontWeight: 600,
+          width: "100%",
+          [$theme.mediaQuery.medium]: {
+            maxWidth: "650px",
+            margin: "0 auto",
+          },
         })}
       >
-        Suggested for you
-      </h2>
-      {Users.map((user, index) => (
-        <UserList
-          key={index}
-          userName={user.userName}
-          name={user.name}
-          pic={user.pic}
-        />
-      ))}
-    </div>
+        <h2
+          className={css({
+            fontSize: "16px",
+            fontWeight: 600,
+          })}
+        >
+          Suggested for you
+        </h2>
+        {Users.map((user, index) => (
+          <UserList
+            key={index}
+            userName={user.userName}
+            name={user.name}
+            pic={user.pic}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 
