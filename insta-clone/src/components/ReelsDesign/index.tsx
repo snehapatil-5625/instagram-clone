@@ -1,15 +1,16 @@
 import { useStyletron } from "baseui";
 import { Avatar } from "baseui/avatar";
-import { Block } from "baseui/block";
 import { Button } from "baseui/button";
 import {
   Bookmark,
   Heart,
   MessageCircle,
   MoreHorizontal,
-  Share2,
+  Send,
   Volume2,
+  VolumeX,
 } from "lucide-react";
+import { useState } from "react";
 
 interface ReelsDesignProps {
   videoSrc: string;
@@ -18,8 +19,10 @@ interface ReelsDesignProps {
   username: string;
   likes: string;
   comments: string;
+  shares: string;
   audioTitle: string;
 }
+
 export default function ReelsDesign({
   videoSrc,
   text,
@@ -27,37 +30,35 @@ export default function ReelsDesign({
   username,
   likes,
   comments,
+  shares,
   audioTitle,
 }: ReelsDesignProps) {
   const [css] = useStyletron();
+  const [isMuted, setIsMuted] = useState(true);
 
   return (
     <div
       className={css({
-        width: "100%",
-        height: "100vh",
-        backgroundColor: "#FFFFFF80",
+        display: "flex",
+        alignItems: "flex-end",
+        gap: "12px",
+        height: "calc(100vh - 40px)",
+        maxWidth: "550px",
+        margin: "0 auto",
         position: "relative",
+        padding: "20px 0",
       })}
     >
+      {/* Video Container */}
       <div
         className={css({
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          ":before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background:
-              "linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.2) 100%)",
-            zIndex: 1,
-          },
+          width: "500px",
+          height: "100%",
+          backgroundColor: "#000",
+          borderRadius: "8px",
+          position: "relative",
+          overflow: "hidden",
+          boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
         })}
       >
         <video
@@ -69,199 +70,136 @@ export default function ReelsDesign({
           src={videoSrc}
           autoPlay
           loop
-          muted
+          muted={isMuted}
           playsInline
         />
-      </div>
 
-      {/* Content Overlay */}
-      <div
-        className={css({
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 2,
-        })}
-      >
-        <Block
-          position="absolute"
-          top="16px"
-          right="16px"
-          display="flex"
-          alignItems="center"
+        {/* Mute Toggle Overlay */}
+        <div
+          className={css({
+            position: "absolute",
+            top: "16px",
+            right: "16px",
+            zIndex: 3,
+          })}
         >
           <Button
+            onClick={() => setIsMuted(!isMuted)}
             kind="tertiary"
-            size="mini"
             overrides={{
               BaseButton: {
                 style: {
-                  backgroundColor: "#FFFFFF80",
-                  color: "white",
+                  backgroundColor: "rgba(0,0,0,0.2)",
+                  color: "#fff",
                   borderRadius: "50%",
+                  padding: "8px",
+                  ":hover": { backgroundColor: "rgba(0,0,0,0.4)" },
                 },
               },
             }}
           >
-            <Volume2 size={20} />
+            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
           </Button>
-        </Block>
+        </div>
 
-        {/* Right Side Actions */}
-
-        {/* Bottom Content */}
-        <Block position="absolute" bottom="0" left="0" right="0" padding="16px">
-          {/* User Info */}
-          <Block display="flex" alignItems="center" marginBottom="12px">
-            <Avatar
-              name={username}
-              size="scale1000"
-              src={profileImage}
-              overrides={{
-                Root: {
-                  style: {
-                    border: "2px solid white",
-                  },
-                },
-              }}
-            />
-            <Block marginLeft="12px" marginRight="auto">
-              <Block
-                color="white"
-                className={css({
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                })}
-              >
-                {username}
-              </Block>
-            </Block>
+        {/* Bottom Info Overlay */}
+        <div
+          className={css({
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "16px",
+            background: "linear-gradient(transparent, rgba(0,0,0,0.8))",
+            color: "#fff",
+            zIndex: 2,
+          })}
+        >
+          <div className={css({ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" })}>
+            <Avatar name={username} size="32px" src={profileImage} />
+            <span className={css({ fontWeight: 600, fontSize: "14px" })}>{username}</span>
+            <span className={css({ fontSize: "14px", opacity: 0.8, cursor: "pointer" })}>•</span>
             <Button
-              size="mini"
+              kind="tertiary"
               overrides={{
                 BaseButton: {
                   style: {
-                    borderRadius: "4px",
-                    border: "1px solid white",
-                    backgroundColor: "transparent",
-                    color: "white",
-                    fontSize: "12px",
-                    fontWeight: "600",
-                    ":hover": {
-                      backgroundColor: "transparent",
-                      opacity: 0.9,
-                    },
+                    color: "#fff",
+                    fontWeight: 600,
+                    fontSize: "14px",
+                    padding: 0,
+                    ":hover": { backgroundColor: "transparent", opacity: 0.8 },
                   },
                 },
               }}
             >
               Follow
             </Button>
-          </Block>
+          </div>
 
-          {/* Caption */}
-          <Block
-            color="white"
-            marginBottom="8px"
-            className={css({
-              fontSize: "14px",
-              lineHeight: "1.4",
-              textShadow: "0 1px 2px rgba(0,0,0,0.2)",
-            })}
-          >
+          <p className={css({ fontSize: "14px", lineHeight: "1.4", marginBottom: "8px", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: "2", WebkitBoxOrient: "vertical" })}>
             {text}
-          </Block>
+          </p>
 
-          {/* Audio Attribution */}
-          <Block
-            display="flex"
-            alignItems="center"
-            color="white"
-            marginTop="8px"
-            className={css({
-              fontSize: "14px",
-              opacity: 0.9,
-              textShadow: "0 1px 2px rgba(0,0,0,0.2)",
-            })}
-          >
-            <span className={css({ marginRight: "4px" })}>♪</span>
-            {audioTitle}
-          </Block>
-        </Block>
+          <div className={css({ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px" })}>
+            <span className={css({ fontSize: "16px" })}>♪</span>
+            <span className={css({ opacity: 0.9, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" })}>{audioTitle}</span>
+          </div>
+        </div>
       </div>
-      <Block
-        position="absolute"
-        right="-60px"
-        bottom="10px"
-        display="flex"
-        flexDirection="column"
-        gridRowGap="20px"
+
+      {/* Right Side Actions */}
+      <div
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
+          paddingBottom: "16px",
+        })}
       >
-        <ActionButton icon={<Heart size={28} color="#000" />} label={likes} />
-        <ActionButton
-          icon={<MessageCircle size={28} color="#000" />}
-          label={comments}
-        />
-        <ActionButton icon={<Share2 size={28} color="#000" />} />
-        <ActionButton icon={<Bookmark size={28} color="#000" />} />
-        <ActionButton icon={<MoreHorizontal size={28} color="#000" />} />
-      </Block>
+        <ActionButton icon={<Heart size={24} />} label={likes} />
+        <ActionButton icon={<MessageCircle size={24} />} label={comments} />
+        <ActionButton icon={<Send size={24} />} label={shares} />
+        <ActionButton icon={<Bookmark size={24} />} />
+        <ActionButton icon={<MoreHorizontal size={24} />} />
+        <div
+          className={css({
+            width: "24px",
+            height: "24px",
+            borderRadius: "4px",
+            border: "2px solid #ccc",
+            overflow: "hidden",
+            cursor: "pointer",
+          })}
+        >
+          <img src={profileImage} className={css({ width: "100%", height: "100%", objectFit: "cover" })} />
+        </div>
+      </div>
     </div>
   );
 }
 
-function ActionButton({
-  icon,
-  label,
-}: {
-  icon: React.ReactNode;
-  label?: string;
-}) {
+function ActionButton({ icon, label }: { icon: React.ReactNode; label?: string }) {
   const [css] = useStyletron();
   return (
-    <div
-      className={css({
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "4px",
-      })}
-    >
+    <div className={css({ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" })}>
       <Button
         kind="tertiary"
-        size="mini"
         overrides={{
           BaseButton: {
             style: {
               backgroundColor: "transparent",
-              color: "white",
-              padding: "4px",
-              ":hover": {
-                backgroundColor: "rgba(255,255,255,0.1)",
-              },
+              color: "#262626",
+              padding: "8px",
+              borderRadius: "50%",
+              ":hover": { backgroundColor: "#f2f2f2" },
             },
           },
         }}
       >
         {icon}
       </Button>
-      {label && (
-        <span
-          className={css({
-            color: "black",
-            fontSize: "13px",
-            fontWeight: 600,
-            textShadow: "0 1px 2px rgba(0,0,0,0.2)",
-          })}
-        >
-          {label}
-        </span>
-      )}
+      {label && <span className={css({ fontSize: "12px", fontWeight: 600, color: "#262626" })}>{label}</span>}
     </div>
   );
 }

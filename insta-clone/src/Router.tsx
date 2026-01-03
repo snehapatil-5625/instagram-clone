@@ -5,6 +5,7 @@ import ReelsPage from "./pages/ReelsPage";
 import ProfilePage from "./pages/ProfilePage";
 import MessagePage from "./pages/MessagePage";
 import HomePage from "./pages/HomePage";
+import DashboardPage from "./pages/DashboardPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/direct/index",
         element: <MessagePage />,
+      },
+      {
+        path: "/dashboard",
+        element: <DashboardPage />,
       },
       {
         path: "/",

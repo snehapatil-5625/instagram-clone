@@ -1,108 +1,90 @@
 import { useStyletron } from "baseui";
-import { StatefulMenu } from "baseui/menu";
-import { useEffect, useRef, useState } from "react";
+import {
+  SquarePlay,
+  Radio,
+  TrendingUp,
+  Sparkles,
+  Plus
+} from "lucide-react";
 import PostModel from "../PostModal";
+import { useState } from "react";
 
-export default function CreateMenu() {
-  const [css, $theme] = useStyletron();
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  const handleItemClick = (itemLabel: string) => {
-    setSelectedItem(itemLabel);
-    setIsModalOpen(true);
-  };
-  function close() {
-    setIsModalOpen(false);
-  }
-
-  return (
-    <>
-      <div
-        ref={menuRef}
-        className={css({
-          position: "absolute",
-          zIndex: 1000,
-          left: "120px",
-          bottom: "60px",
-          [$theme.mediaQuery.medium]: {
-            bottom: "65px",
-            left: 0,
-          },
-        })}
-      >
-        <StatefulMenu
-          items={List}
-          overrides={{
-            List: {
-              style: {
-                width: "200px",
-                padding: 0,
-                margin: 0,
-                borderRadius: "5px",
-                ":hover": {
-                  cursor: "pointer",
-                },
-              },
-            },
-            ListItem: {
-              component: (props) => (
-                <>
-                  <div
-                    onClick={() => handleItemClick(props.item.label)}
-                    className={css({
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "10px 15px",
-                      ":hover": {
-                        backgroundColor: $theme.colors.backgroundSecondary,
-                      },
-                    })}
-                  >
-                    <span
-                      className={css({
-                        fontSize: "16px",
-                      })}
-                    >
-                      {props.item.label}
-                    </span>
-
-                    <img
-                      className={css({
-                        width: "25px",
-                        height: "25px",
-                      })}
-                      src={props.item.icon}
-                    />
-                  </div>
-                  {props.item.label === "Post" && (
-                    <div
-                      className={css({
-                        borderBottom: `1px solid ${$theme.colors.backgroundTertiary}`,
-                        width: "100%",
-                      })}
-                    />
-                  )}
-                </>
-              ),
-            },
-          }}
-        />
-        {isModalOpen && <PostModel isOpen={isModalOpen} close={close} />}
-      </div>
-    </>
-  );
+interface CreateMenuProps {
+  onClose?: () => void;
 }
 
-const List = [
-  {
-    label: "Post",
-    icon: "/src/assets/media.png",
-  },
-  {
-    label: "Live Video",
-    icon: "/src/assets/live.png",
-  },
-];
+export default function CreateMenu({ onClose }: CreateMenuProps) {
+  const [css] = useStyletron();
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+
+  const handleItemClick = (onClick?: () => void) => {
+    if (onClick) onClick();
+    if (onClose) onClose();
+  };
+
+  const menuItems = [
+    {
+      label: "Post",
+      icon: <SquarePlay size={20} />,
+      onClick: () => setIsPostModalOpen(true)
+    },
+    { label: "Live video", icon: <Radio size={20} /> },
+    { label: "Ad", icon: <TrendingUp size={20} /> },
+    { label: "AI", icon: <Sparkles size={18} /> },
+  ];
+
+  return (
+    <div className={css({
+      display: "flex",
+      flexDirection: "column",
+      width: "266px",
+      backgroundColor: "#fff",
+    })}>
+      {/* Header */}
+      <div className={css({
+        padding: "12px 16px",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        borderBottom: "1px solid #efefef"
+      })}>
+        <Plus size={24} />
+        <span className={css({ fontSize: "16px", fontWeight: 600 })}>Create</span>
+      </div>
+
+      {/* Items */}
+      {menuItems.map((item, index) => (
+        <div
+          key={index}
+          onClick={() => handleItemClick(item.onClick)}
+          className={css({
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "12px 16px",
+            cursor: "pointer",
+            borderBottom: index === menuItems.length - 1 ? "none" : "1px solid #efefef",
+            ":hover": {
+              backgroundColor: "#fafafa",
+            },
+          })}
+        >
+          <span className={css({ fontSize: "14px", fontWeight: 400 })}>{item.label}</span>
+          <div className={css({ color: "#262626" })}>
+            {item.icon}
+          </div>
+        </div>
+      ))}
+
+      {isPostModalOpen && (
+        <PostModel
+          isOpen={isPostModalOpen}
+          close={() => {
+            setIsPostModalOpen(false);
+            if (onClose) onClose();
+          }}
+        />
+      )}
+    </div>
+  );
+}
