@@ -1,13 +1,16 @@
 import { useStyletron } from "baseui";
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
+import { MessageCircle } from "lucide-react";
 import Footer from "../components/Footer";
 import BottomNav from "../components/BottomNavigation";
 import { useState } from "react";
+import FloatingMessagesPanel from "../components/FloatingMessagesPanel";
 
 export default function DefaultLayout() {
   const [css, $theme] = useStyletron();
   const [activeDrawer, setActiveDrawer] = useState<"none" | "search" | "notifications" | "messages">("none");
+  const [isMessagesPanelOpen, setIsMessagesPanelOpen] = useState(false);
 
   const isCondensed = activeDrawer !== "none";
   const condensedWidth = "72px";
@@ -78,6 +81,36 @@ export default function DefaultLayout() {
       </div>
 
       <BottomNav />
+
+      {/* Global Floating Messages Button */}
+      <div
+        onClick={() => setIsMessagesPanelOpen(!isMessagesPanelOpen)}
+        className={css({
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          backgroundColor: "#fff",
+          padding: "10px 24px",
+          borderRadius: "50px",
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+          cursor: "pointer",
+          zIndex: 110,
+          [$theme.mediaQuery.medium]: {
+            bottom: "20px",
+            right: "20px",
+          }
+        })}
+      >
+        <MessageCircle size={24} />
+        <span className={css({ fontWeight: 600, fontSize: "14px" })}>Messages</span>
+      </div>
+
+      {isMessagesPanelOpen && (
+        <FloatingMessagesPanel onClose={() => setIsMessagesPanelOpen(false)} />
+      )}
     </div>
   );
 }

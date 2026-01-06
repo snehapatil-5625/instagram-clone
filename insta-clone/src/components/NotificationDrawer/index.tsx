@@ -1,7 +1,6 @@
 import { useStyletron } from "baseui";
 import { Avatar } from "baseui/avatar";
 import { Button } from "baseui/button";
-import { HeadingXSmall } from "baseui/typography";
 import { Shield } from "lucide-react";
 
 interface NotificationProps {
@@ -24,10 +23,9 @@ export default function NotificationDrawer({
         width: "397px",
         height: "100vh",
         backgroundColor: "#fff",
-        borderTopRightRadius: "16px",
-        borderBottomRightRadius: "16px",
-        boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
-        zIndex: 9,
+        borderLeft: "1px solid #efefef",
+        borderRight: "1px solid #efefef",
+        zIndex: 11,
         transform: isOpen ? "translateX(0)" : "translateX(-100%)",
         transition: "transform 0.3s ease-in-out",
         visibility: isOpen ? "visible" : "hidden",

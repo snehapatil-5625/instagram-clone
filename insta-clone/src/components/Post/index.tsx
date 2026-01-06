@@ -2,6 +2,8 @@ import { useStyletron } from "baseui";
 import { Avatar } from "baseui/avatar";
 import { Button } from "baseui/button";
 import { useState } from "react";
+import { MoreHorizontal } from "lucide-react";
+import PostOptionsModal from "../PostOptionsModal";
 
 interface PostProps {
     username: string;
@@ -26,6 +28,7 @@ export default function Post({
 }: PostProps) {
     const [css, $theme] = useStyletron();
     const [isLiked, setIsLiked] = useState(false);
+    const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
     return (
         <div
@@ -33,9 +36,9 @@ export default function Post({
                 width: "100%",
                 maxWidth: "470px",
                 margin: "0 auto",
-                marginBottom: "20px",
-                borderBottom: `1px solid ${$theme.colors.mono400}`,
-                paddingBottom: "20px",
+                marginBottom: "32px",
+                borderBottom: `1px solid #efefef`,
+                paddingBottom: "32px",
             })}
         >
             <div
@@ -54,49 +57,58 @@ export default function Post({
                     })}
                 >
                     <Avatar name={username} size="scale1000" src={avatar} />
-                    <div className={css({ display: "flex", alignItems: "center", gap: "5px" })}>
+                    <div className={css({ display: "flex", alignItems: "center", gap: "4px" })}>
                         <span className={css({ fontWeight: 600, fontSize: "14px" })}>{username}</span>
-                        <span className={css({ color: $theme.colors.mono700, fontSize: "14px" })}>• {time}</span>
-                        <Button
-                            kind="tertiary"
-                            size="mini"
-                            overrides={{
-                                BaseButton: {
-                                    style: {
-                                        color: "#0095f6",
-                                        fontWeight: 600,
-                                        padding: 0,
-                                        ":hover": { backgroundColor: "transparent", color: "#00376b" },
-                                    },
-                                },
-                            }}
-                        >
-                            Follow
-                        </Button>
+                        <span className={css({ color: "#8e8e8e", fontSize: "14px" })}>• {time}</span>
                     </div>
                 </div>
-                <Button
-                    kind="tertiary"
-                    size="mini"
-                    overrides={{
-                        BaseButton: {
-                            style: {
-                                padding: 0,
-                                ":hover": { backgroundColor: "transparent" },
+                <div className={css({ display: "flex", alignItems: "center", gap: "12px" })}>
+                    <Button
+                        kind="tertiary"
+                        size="mini"
+                        overrides={{
+                            BaseButton: {
+                                style: {
+                                    color: "#0095f6",
+                                    fontWeight: 600,
+                                    padding: 0,
+                                    fontSize: "14px",
+                                    ":hover": { backgroundColor: "transparent", color: "#00376b" },
+                                },
                             },
-                        },
-                    }}
-                >
-                    <img src="/src/assets/hamburger.png" style={{ width: "20px" }} alt="more" />
-                </Button>
+                        }}
+                    >
+                        Follow
+                    </Button>
+                    <Button
+                        onClick={() => setIsOptionsOpen(true)}
+                        kind="tertiary"
+                        size="mini"
+                        overrides={{
+                            BaseButton: {
+                                style: {
+                                    padding: 0,
+                                    ":hover": { backgroundColor: "transparent" },
+                                },
+                            },
+                        }}
+                    >
+                        <MoreHorizontal size={20} />
+                    </Button>
+                </div>
             </div>
+
+            <PostOptionsModal
+                isOpen={isOptionsOpen}
+                onClose={() => setIsOptionsOpen(false)}
+            />
 
             <div
                 className={css({
                     width: "100%",
                     borderRadius: "4px",
                     overflow: "hidden",
-                    border: `1px solid ${$theme.colors.mono400}`,
+                    border: `1px solid #efefef`,
                 })}
             >
                 <img src={image} className={css({ width: "100%", display: "block" })} alt="post" />

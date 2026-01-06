@@ -6,6 +6,7 @@ import ProfilePage from "./pages/ProfilePage";
 import MessagePage from "./pages/MessagePage";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
+import ArchivePage from "./pages/ArchivePage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashboardPage />,
+      },
+      {
+        path: "/archive",
+        element: <ArchivePage />,
       },
       {
         path: "/",

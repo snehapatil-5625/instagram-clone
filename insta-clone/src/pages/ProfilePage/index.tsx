@@ -3,6 +3,7 @@ import { Avatar } from "baseui/avatar";
 import { Button } from "baseui/button";
 import { Settings, Grid, Bookmark, UserSquare2, Plus, Link as LinkIcon, Heart, MessageCircle } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SettingsModal from "../../components/SettingsModal";
 import NewHighlightModal from "../../components/NewHighlightModal";
 
@@ -23,6 +24,7 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("posts");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isNewHighlightOpen, setIsNewHighlightOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -123,6 +125,7 @@ export default function ProfilePage() {
                     },
                   },
                 }}
+                onClick={() => navigate("/archive")}
               >
                 View archive
               </Button>

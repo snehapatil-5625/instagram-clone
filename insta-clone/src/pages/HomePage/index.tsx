@@ -34,8 +34,8 @@ export default function HomePage() {
         display: "flex",
         justifyContent: "center",
         width: "100%",
-        gap: "64px",
-        paddingTop: "24px",
+        gap: "72px",
+        paddingTop: "32px",
       })}
     >
       {/* Central Feed */}

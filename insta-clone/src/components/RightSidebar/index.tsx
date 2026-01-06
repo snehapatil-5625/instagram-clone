@@ -62,7 +62,7 @@ export default function RightSidebar() {
                     />
                     <div>
                         <div className={css({ fontWeight: 600, fontSize: "14px" })}>anthaathico</div>
-                        <div className={css({ color: $theme.colors.mono700, fontSize: "14px" })}>
+                        <div className={css({ color: "#8e8e8e", fontSize: "14px" })}>
                             Anthaathi Private Limited
                         </div>
                     </div>
@@ -74,7 +74,8 @@ export default function RightSidebar() {
                         BaseButton: {
                             style: {
                                 color: "#0095f6",
-                                fontWeight: 600,
+                                fontWeight: 700,
+                                fontSize: "12px",
                                 ":hover": { backgroundColor: "transparent" },
                             },
                         },
@@ -90,10 +91,10 @@ export default function RightSidebar() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    marginBottom: "12px",
+                    marginBottom: "16px",
                 })}
             >
-                <div className={css({ color: $theme.colors.mono700, fontWeight: 600, fontSize: "14px" })}>
+                <div className={css({ color: "#8e8e8e", fontWeight: 600, fontSize: "14px" })}>
                     Suggested for you
                 </div>
                 <Button
@@ -102,7 +103,7 @@ export default function RightSidebar() {
                     overrides={{
                         BaseButton: {
                             style: {
-                                color: "#262626",
+                                color: "#000",
                                 fontWeight: 600,
                                 fontSize: "12px",
                                 ":hover": { backgroundColor: "transparent" },
@@ -123,7 +124,7 @@ export default function RightSidebar() {
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            marginBottom: "12px",
+                            marginBottom: "16px",
                         })}
                     >
                         <div className={css({ display: "flex", alignItems: "center", gap: "12px" })}>
@@ -141,7 +142,7 @@ export default function RightSidebar() {
                                 </div>
                                 <div
                                     className={css({
-                                        color: $theme.colors.mono700,
+                                        color: "#8e8e8e",
                                         fontSize: "12px",
                                         maxWidth: "150px",
                                         overflow: "hidden",
@@ -160,7 +161,7 @@ export default function RightSidebar() {
                                 BaseButton: {
                                     style: {
                                         color: "#0095f6",
-                                        fontWeight: 600,
+                                        fontWeight: 700,
                                         fontSize: "12px",
                                         ":hover": { backgroundColor: "transparent" },
                                     },

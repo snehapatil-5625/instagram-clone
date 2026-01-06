@@ -1,5 +1,4 @@
 import { useStyletron } from "baseui";
-import { HeadingXSmall } from "baseui/typography";
 import { Avatar } from "baseui/avatar";
 import { Input } from "baseui/input";
 import { useState } from "react";
@@ -10,8 +9,8 @@ interface MessagesDrawerProps {
     onClose: () => void;
 }
 
-export default function MessagesDrawer({ isOpen, onClose }: MessagesDrawerProps) {
-    const [css, $theme] = useStyletron();
+export default function MessagesDrawer({ isOpen }: MessagesDrawerProps) {
+    const [css] = useStyletron();
     const [activeTab, setActiveTab] = useState("Primary");
 
     const tabs = ["Primary", "General", "Requests"];
@@ -25,10 +24,9 @@ export default function MessagesDrawer({ isOpen, onClose }: MessagesDrawerProps)
                 width: "397px",
                 height: "100vh",
                 backgroundColor: "#fff",
-                borderTopRightRadius: "16px",
-                borderBottomRightRadius: "16px",
-                boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
-                zIndex: 9,
+                borderLeft: "1px solid #efefef",
+                borderRight: "1px solid #efefef",
+                zIndex: 11,
                 transform: isOpen ? "translateX(0)" : "translateX(-100%)",
                 transition: "transform 0.3s ease-in-out",
                 visibility: isOpen ? "visible" : "hidden",
