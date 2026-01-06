@@ -1,77 +1,77 @@
 import { useStyletron } from "baseui";
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
+import { MessageCircle } from "lucide-react";
 import Footer from "../components/Footer";
 import BottomNav from "../components/BottomNavigation";
+import { useState } from "react";
+import FloatingMessagesPanel from "../components/FloatingMessagesPanel";
 
 export default function DefaultLayout() {
   const [css, $theme] = useStyletron();
+  const [activeDrawer, setActiveDrawer] = useState<"none" | "search" | "notifications" | "messages">("none");
+  const [isMessagesPanelOpen, setIsMessagesPanelOpen] = useState(false);
+
+  const isCondensed = activeDrawer !== "none";
+  const condensedWidth = "72px";
+  const expandedWidth = "250px";
+
   return (
     <div
       className={css({
         display: "flex",
         width: "100%",
-        position: "relative",
-        height: "100%",
-        paddingLeft: 0,
-        paddingRight: 0,
-        [$theme.mediaQuery.medium]: {
-          paddingLeft: $theme.sizing.scale500,
-          paddingRight: $theme.sizing.scale500,
-        },
+        minHeight: "100vh",
       })}
     >
+      {/* Sidebar Container */}
       <div
         className={css({
-          width: "250px",
-          height: "100%",
-          position: "fixed",
-        })}
-      >
-        <Sidebar />
-      </div>
-      <div
-        className={css({
-          width: "1px",
+          width: isCondensed ? condensedWidth : expandedWidth,
           height: "100vh",
-          backgroundColor: $theme.colors.mono500,
           position: "fixed",
-          left: "0px",
+          left: 0,
           top: 0,
-          zIndex: "-1",
+          borderRight: `1px solid ${$theme.colors.mono400}`,
+          backgroundColor: "#fff",
+          zIndex: 10,
+          display: "none",
+          transition: "width 0.3s ease",
           [$theme.mediaQuery.medium]: {
-            left: "80px",
+            display: "block",
+            width: condensedWidth,
           },
           [$theme.mediaQuery.large]: {
-            left: "280px",
+            width: isCondensed ? condensedWidth : expandedWidth,
           },
         })}
-      ></div>
+      >
+        <Sidebar activeDrawer={activeDrawer} setActiveDrawer={setActiveDrawer} />
+      </div>
+
+      {/* Main Content Area */}
       <div
         className={css({
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          height: "100%",
-          minHeight: "100vh",
-          paddingLeft: $theme.sizing.scale500,
-          paddingRight: $theme.sizing.scale500,
-          //  paddingTop: $theme.sizing.scale800,
-          //paddingBottom: $theme.sizing.scale800,
+          flex: 1,
+          transition: "margin-left 0.3s ease",
           [$theme.mediaQuery.medium]: {
-            width: "calc(100% - 80px)",
-            marginLeft: "80px",
-            marginRight: $theme.sizing.scale200,
+            marginLeft: condensedWidth,
           },
           [$theme.mediaQuery.large]: {
-            marginLeft: "280px",
-            width: "calc(100% - 280px)",
+            marginLeft: isCondensed ? condensedWidth : expandedWidth,
           },
         })}
       >
         <div
           className={css({
-            flex: " 1 0 auto",
+            flex: "1 0 auto",
+            width: "100%",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            padding: "0 20px",
           })}
         >
           <Outlet />
@@ -79,7 +79,38 @@ export default function DefaultLayout() {
 
         <Footer />
       </div>
+
       <BottomNav />
+
+      {/* Global Floating Messages Button */}
+      <div
+        onClick={() => setIsMessagesPanelOpen(!isMessagesPanelOpen)}
+        className={css({
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          backgroundColor: "#fff",
+          padding: "10px 24px",
+          borderRadius: "50px",
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+          cursor: "pointer",
+          zIndex: 110,
+          [$theme.mediaQuery.medium]: {
+            bottom: "20px",
+            right: "20px",
+          }
+        })}
+      >
+        <MessageCircle size={24} />
+        <span className={css({ fontWeight: 600, fontSize: "14px" })}>Messages</span>
+      </div>
+
+      {isMessagesPanelOpen && (
+        <FloatingMessagesPanel onClose={() => setIsMessagesPanelOpen(false)} />
+      )}
     </div>
   );
 }

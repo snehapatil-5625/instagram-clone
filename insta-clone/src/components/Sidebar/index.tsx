@@ -1,21 +1,26 @@
 import { useStyletron } from "baseui";
 import { Button } from "baseui/button";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MoreOptions from "../MoreOptions";
 import { PLACEMENT, StatefulPopover } from "baseui/popover";
 import NotificationDrawer from "../NotificationDrawer";
+import SearchDrawer from "../SearchDrawer";
+import MessagesDrawer from "../MessagesDrawer";
 import CreateMenu from "../CreateMenu";
+import { Avatar } from "baseui/avatar";
 
-export default function Sidebar() {
+interface SidebarProps {
+  activeDrawer: "none" | "search" | "notifications" | "messages";
+  setActiveDrawer: (drawer: "none" | "search" | "notifications" | "messages") => void;
+}
+
+export default function Sidebar({ activeDrawer, setActiveDrawer }: SidebarProps) {
   const [css, $theme] = useStyletron();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const handleNavigation = (path: any) => {
+    setActiveDrawer("none");
     if (path) {
       navigate(path);
     } else {
@@ -23,125 +28,138 @@ export default function Sidebar() {
     }
   };
 
-  const handleNotificationsClick = () => {
-    setIsDrawerOpen(true);
-  };
+  const isCondensed = activeDrawer !== "none";
 
   return (
     <div
       className={css({
         display: "flex",
         flexDirection: "column",
-        gap: "10px",
-        alignItems: "flex-start",
+        alignItems: isCondensed ? "center" : "flex-start",
         width: "100%",
-        justifyContent: "space-between",
-        height: "calc(100% - 40px)",
-        paddingTop: $theme.sizing.scale1000,
-        paddingBottom: $theme.sizing.scale1000,
+        height: "100%",
+        padding: isCondensed ? "20px 0px" : "20px 12px",
+        boxSizing: "border-box",
+        backgroundColor: "#fff",
+        transition: "width 0.3s ease, padding 0.3s ease",
+        zIndex: 10,
+        position: "relative",
       })}
     >
+      {/* Logo Section */}
       <div
         className={css({
+          padding: isCondensed ? "12px 0" : "12px",
+          marginBottom: "20px",
           width: "100%",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
+          justifyContent: isCondensed ? "center" : "flex-start",
+          boxSizing: "border-box",
         })}
       >
+        {!isCondensed ? (
+          <img
+            className={css({
+              width: "103px",
+              display: "block",
+              [$theme.mediaQuery.medium]: { display: "none" },
+              [$theme.mediaQuery.large]: { display: "block" },
+            })}
+            src="/src/assets/insta_logo1.png"
+            alt="Instagram"
+          />
+        ) : null}
         <img
           className={css({
-            width: "50%",
-            marginLeft: $theme.sizing.scale500,
-            marginRight: $theme.sizing.scale500,
-            marginBottom: $theme.sizing.scale700,
-            display: "none",
-            [$theme.mediaQuery.large]: {
-              display: "flex",
-            },
+            width: "24px",
+            display: isCondensed ? "block" : "none",
+            [$theme.mediaQuery.medium]: { display: isCondensed ? "block" : "none" },
+            [$theme.mediaQuery.large]: { display: isCondensed ? "block" : "none" },
           })}
-          src="/src/assets/insta_logo1.png"
+          src="/src/assets/instagram.png"
+          alt="Logo"
         />
-
-        <div
-          className={css({
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            marginLeft: $theme.sizing.scale200,
-            marginRight: $theme.sizing.scale200,
-            marginBottom: $theme.sizing.scale700,
-            [$theme.mediaQuery.large]: {
+        {!isCondensed && (
+          <img
+            className={css({
+              width: "24px",
               display: "none",
-            },
-          })}
-        >
-          <Button
-            overrides={{
-              BaseButton: {
-                style: {
-                  textTransform: "capitalize",
-                  display: "none",
-                  alignItems: "flex-start",
-                  gap: "20px",
-                  ...$theme.typography.LabelLarge,
-                  justifyContent: "flex-start",
-                  [$theme.mediaQuery.medium]: {
-                    display: "flex",
-                  },
-                  [$theme.mediaQuery.large]: {
-                    display: "none",
-                  },
-                },
-              },
-            }}
-            kind="tertiary"
-          >
-            <img
-              className={css({
-                width: "25px",
-                height: "25px",
-                transition: "transform 0.3s ease-in-out",
-                ":hover": {
-                  transform: "scale(1.1)",
-                },
-              })}
-              src="/src/assets/instagram.png"
-            />
-          </Button>
-        </div>
-        <div
-          className={css({
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            [$theme.mediaQuery.large]: {
-              alignItems: "center",
-              width: "100%",
-            },
-          })}
-        >
-          {navigation.map((item, index) => (
-            <div
-              key={index}
-              className={css({
-                display: "flex",
-                marginLeft: $theme.sizing.scale200,
-                marginRight: $theme.sizing.scale200,
-                marginTop: $theme.sizing.scale200,
-                alignItems: "center",
-                [$theme.mediaQuery.large]: {
-                  width: "100%",
-                },
-              })}
-            >
+              [$theme.mediaQuery.medium]: { display: "block" },
+              [$theme.mediaQuery.large]: { display: "none" },
+            })}
+            src="/src/assets/instagram.png"
+            alt="Logo"
+          />
+        )}
+      </div>
+
+      {/* Navigation Section */}
+      <div className={css({ flex: 1, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" })}>
+        {navigation.map((item, index) => (
+          <div key={index} className={css({ margin: "4px 0", width: "100%", display: "flex", justifyContent: "center" })}>
+            {item.name.toLowerCase() === "create" ? (
+              <StatefulPopover
+                content={({ close }) => <CreateMenu onClose={close} />}
+                placement={PLACEMENT.rightTop}
+                overrides={{
+                  Inner: { style: { borderRadius: "12px", padding: "0", overflow: "hidden" } },
+                }}
+              >
+                <Button
+                  onClick={() => setActiveDrawer("none")}
+                  kind="tertiary"
+                  overrides={{
+                    BaseButton: {
+                      style: {
+                        width: isCondensed ? "48px" : "100%",
+                        height: isCondensed ? "48px" : "auto",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: isCondensed ? "center" : "flex-start",
+                        gap: "16px",
+                        padding: isCondensed ? "0" : "12px",
+                        borderRadius: isCondensed ? "50%" : "8px",
+                        ":hover": { backgroundColor: "rgba(0, 0, 0, 0.05)" },
+                      },
+                    },
+                  }}
+                >
+                  <div className={css({ position: "relative", display: "flex", alignItems: "center" })}>
+                    <img
+                      className={css({
+                        width: "24px",
+                        height: "24px",
+                        transition: "transform 0.2s ease",
+                        transform: activeDrawer === item.name.toLowerCase() ? "scale(1.1)" : "none",
+                      })}
+                      src={item.icon}
+                      alt={item.name}
+                    />
+                  </div>
+                  {!isCondensed && (
+                    <span
+                      className={css({
+                        fontSize: "16px",
+                        fontWeight: activeDrawer === item.name.toLowerCase() ? 700 : 400,
+                        display: "none",
+                        [$theme.mediaQuery.large]: { display: "inline" },
+                      })}
+                    >
+                      {item.name}
+                    </span>
+                  )}
+                </Button>
+              </StatefulPopover>
+            ) : (
               <Button
-                size="compact"
                 onClick={() => {
-                  if (item.name === "notifications") {
-                    handleNotificationsClick();
-                  } else if (item.name === "create") {
-                    setIsMenuOpen(!isMenuOpen);
+                  const itemName = item.name.toLowerCase();
+                  if (itemName === "search") {
+                    setActiveDrawer(activeDrawer === "search" ? "none" : "search");
+                  } else if (itemName === "notifications") {
+                    setActiveDrawer(activeDrawer === "notifications" ? "none" : "notifications");
+                  } else if (itemName === "messages") {
+                    setActiveDrawer(activeDrawer === "messages" ? "none" : "messages");
                   } else {
                     handleNavigation(item.path);
                   }
@@ -150,182 +168,192 @@ export default function Sidebar() {
                 overrides={{
                   BaseButton: {
                     style: {
-                      textTransform: "capitalize",
-                      display: "none",
-                      alignItems: "flex-start",
-                      gap: "20px",
-                      ...$theme.typography.LabelLarge,
-                      justifyContent: "flex-start",
-                      paddingTop: $theme.sizing.scale500,
-                      paddingBottom: $theme.sizing.scale500,
-                      [$theme.mediaQuery.medium]: {
-                        display: "flex",
-                        width: "100%",
-                      },
+                      width: isCondensed ? "48px" : "100%",
+                      height: isCondensed ? "48px" : "auto",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: isCondensed ? "center" : "flex-start",
+                      gap: "16px",
+                      padding: isCondensed ? "0" : "12px",
+                      borderRadius: isCondensed ? "50%" : "8px",
+                      border:
+                        activeDrawer === item.name.toLowerCase()
+                          ? `1px solid ${$theme.colors.mono400}`
+                          : "none",
+                      ":hover": { backgroundColor: "rgba(0, 0, 0, 0.05)" },
                     },
                   },
                 }}
               >
-                {item.icon && (
-                  <img
+                <div className={css({ position: "relative", display: "flex", alignItems: "center" })}>
+                  {item.name.toLowerCase() === "profile" ? (
+                    <Avatar name="profile" size="24px" src="/src/assets/profile.png" />
+                  ) : (
+                    <img
+                      className={css({
+                        width: "24px",
+                        height: "24px",
+                        transition: "transform 0.2s ease",
+                        transform: activeDrawer === item.name.toLowerCase() ? "scale(1.1)" : "none",
+                      })}
+                      src={item.icon}
+                      alt={item.name}
+                    />
+                  )}
+                  {item.name.toLowerCase() === "notifications" && (
+                    <div
+                      className={css({
+                        position: "absolute",
+                        top: "-4px",
+                        right: "-10px",
+                        backgroundColor: "#ff3040",
+                        color: "#fff",
+                        borderRadius: "10px",
+                        fontSize: "11px",
+                        padding: "2px 5px",
+                        fontWeight: 700,
+                        border: "2px solid #fff",
+                      })}
+                    >
+                      1
+                    </div>
+                  )}
+                </div>
+                {!isCondensed && (
+                  <span
                     className={css({
-                      width: "25px",
-                      height: "25px",
-                      transition: "transform 0.3s ease-in-out",
-                      ":hover": {
-                        transform: "scale(1.1)",
-                      },
+                      fontSize: "16px",
+                      fontWeight: activeDrawer === item.name.toLowerCase() ? 700 : 400,
+                      display: "none",
+                      [$theme.mediaQuery.large]: { display: "inline" },
                     })}
-                    src={item.icon}
-                    alt="image"
-                  />
+                  >
+                    {item.name}
+                  </span>
                 )}
-                <span
-                  className={css({
-                    display: "none",
-                    [$theme.mediaQuery.large]: {
-                      display: "inline",
-                    },
-                  })}
-                >
-                  {" "}
-                  {item.name}
-                </span>
               </Button>
-            </div>
-          ))}
-        </div>
+            )}
+          </div>
+        ))}
       </div>
+
+      {/* Bottom Section */}
       <div
         className={css({
+          width: "100%",
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          [$theme.mediaQuery.large]: {
-            width: "100%",
-          },
         })}
       >
-        <StatefulPopover
-          content={() => (
-            <>
-              <MoreOptions />
-            </>
-          )}
-          placement={PLACEMENT.top}
-          returnFocus
-          autoFocus
-          overrides={{
-            Inner: {
-              style: {
-                width: "280px",
-                height: "100%",
-                backgroundColor: "#FFF",
-                padding: "10px",
-                borderRadius: "20px",
-              },
-            },
-            Body: {
-              style: {
-                marginLeft: $theme.sizing.scale500,
-                borderRadius: "20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-              },
-            },
-          }}
+        <div
+          className={css({
+            width: "100%",
+            borderTop: isCondensed ? "none" : `1px solid ${$theme.colors.mono300}`,
+            paddingTop: "12px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          })}
         >
-          <Button
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
+          {/* More Button */}
+          <StatefulPopover
+            content={() => <MoreOptions />}
+            placement={PLACEMENT.topRight}
             overrides={{
-              BaseButton: {
-                style: {
-                  textTransform: "capitalize",
-                  display: "none",
-                  alignItems: "flex-start",
-                  gap: "20px",
-                  ...$theme.typography.LabelLarge,
-                  justifyContent: "flex-start",
-                  [$theme.mediaQuery.medium]: {
-                    width: "100%",
+              Inner: { style: { borderRadius: "12px", padding: "8px", width: "266px" } },
+            }}
+          >
+            <div className={css({ width: "100%", display: "flex", justifyContent: "center", marginBottom: "12px" })}>
+              <Button
+                kind="tertiary"
+                overrides={{
+                  BaseButton: {
+                    style: {
+                      width: isCondensed ? "48px" : "100%",
+                      height: isCondensed ? "48px" : "auto",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: isCondensed ? "center" : "flex-start",
+                      gap: "16px",
+                      padding: isCondensed ? "0" : "12px",
+                      borderRadius: isCondensed ? "50%" : "8px",
+                      ":hover": { backgroundColor: "rgba(0, 0, 0, 0.05)" },
+                    },
+                  },
+                }}
+              >
+                <img src="/src/assets/hamburger.png" style={{ width: "24px" }} alt="More" />
+                {!isCondensed && (
+                  <span
+                    className={css({
+                      fontSize: "16px",
+                      display: "none",
+                      [$theme.mediaQuery.large]: { display: "inline" },
+                    })}
+                  >
+                    More
+                  </span>
+                )}
+              </Button>
+            </div>
+          </StatefulPopover>
+
+          {/* Also from Meta */}
+          <div className={css({ width: "100%", display: "flex", justifyContent: "center", marginBottom: "12px" })}>
+            <Button
+              kind="tertiary"
+              overrides={{
+                BaseButton: {
+                  style: {
+                    width: isCondensed ? "48px" : "100%",
+                    height: isCondensed ? "48px" : "auto",
                     display: "flex",
+                    alignItems: "center",
+                    justifyContent: isCondensed ? "center" : "flex-start",
+                    gap: "16px",
+                    padding: isCondensed ? "0" : "12px",
+                    borderRadius: isCondensed ? "50%" : "8px",
+                    ":hover": { backgroundColor: "rgba(0, 0, 0, 0.05)" },
                   },
                 },
-              },
-            }}
-            kind="tertiary"
-          >
-            <img
-              className={css({
-                width: "25px",
-                height: "25px",
-                transition: "transform 0.3s ease-in-out",
-                ":hover": {
-                  transform: "scale(1.1)",
-                },
-              })}
-              src="/src/assets/hamburger.png"
-            />
-            <span
-              className={css({
-                display: "none",
-                [$theme.mediaQuery.large]: {
-                  display: "flex",
-                },
-              })}
+              }}
             >
-              {" "}
-              More
-            </span>
-          </Button>
-        </StatefulPopover>
+              <img src="/src/assets/infinity-logo.png" style={{ width: "24px" }} alt="Meta" />
+              {!isCondensed && (
+                <span
+                  className={css({
+                    fontSize: "16px",
+                    display: "none",
+                    [$theme.mediaQuery.large]: { display: "inline" },
+                  })}
+                >
+                  Also from Meta
+                </span>
+              )}
+            </Button>
+          </div>
+        </div>
       </div>
-      {isOpen && <MoreOptions />}
-      <NotificationDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
-      {isMenuOpen && <CreateMenu />}
+
+      <SearchDrawer isOpen={activeDrawer === "search"} onClose={() => setActiveDrawer("none")} />
+      <NotificationDrawer
+        isOpen={activeDrawer === "notifications"}
+        onClose={() => setActiveDrawer("none")}
+      />
+      <MessagesDrawer isOpen={activeDrawer === "messages"} onClose={() => setActiveDrawer("none")} />
     </div>
   );
 }
 
 const navigation = [
-  {
-    icon: "/src/assets/home.png",
-    name: "home",
-    path: "/",
-  },
-  {
-    icon: "/src/assets/loupe.png",
-    name: "search",
-    path: "/",
-  },
-  {
-    icon: "/src/assets/compass.png",
-    name: "explore",
-    path: "/explore",
-  },
-  {
-    icon: "/src/assets/reel.png",
-    name: "reels",
-    path: "/reels",
-  },
-  {
-    icon: "/src/assets/chat-new.png",
-    name: "messages",
-    path: "/direct/index",
-  },
-  {
-    icon: "/src/assets/favorite.png",
-    name: "notifications",
-  },
-  {
-    icon: "/src/assets/add.png",
-    name: "create",
-  },
-  {
-    icon: "/src/assets/profile.png",
-    name: "profile",
-    path: "/profile",
-  },
+  { icon: "/src/assets/home.png", name: "Home", path: "/" },
+  { icon: "/src/assets/loupe.png", name: "Search" },
+  { icon: "/src/assets/compass.png", name: "Explore", path: "/explore" },
+  { icon: "/src/assets/reel.png", name: "Reels", path: "/reels" },
+  { icon: "/src/assets/chat-new.png", name: "Messages" },
+  { icon: "/src/assets/favorite.png", name: "Notifications" },
+  { icon: "/src/assets/add.png", name: "Create" },
+  { icon: "/src/assets/timeline.png", name: "Dashboard", path: "/dashboard" },
+  { name: "profile", path: "/profile" },
 ];
