@@ -1,9 +1,12 @@
 import { useStyletron } from "baseui";
 import { Avatar } from "baseui/avatar";
 import { Button } from "baseui/button";
+import { useState } from "react";
+import LoginModal from "../LoginModal";
 
 export default function RightSidebar() {
     const [css, $theme] = useStyletron();
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const suggestions = [
         {
@@ -68,6 +71,7 @@ export default function RightSidebar() {
                     </div>
                 </div>
                 <Button
+                    onClick={() => setIsLoginModalOpen(true)}
                     kind="tertiary"
                     size="mini"
                     overrides={{
@@ -187,6 +191,10 @@ export default function RightSidebar() {
                 </div>
                 <div>© 2026 INSTAGRAM FROM META</div>
             </div>
+            <LoginModal
+                isOpen={isLoginModalOpen}
+                onClose={() => setIsLoginModalOpen(false)}
+            />
         </div>
     );
 }

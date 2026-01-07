@@ -4,18 +4,16 @@ import {
   Radio,
   TrendingUp,
   Sparkles,
-  Plus
 } from "lucide-react";
-import PostModel from "../PostModal";
-import { useState } from "react";
-
 interface CreateMenuProps {
+  onPostClick?: () => void;
+  onLiveVideoClick?: () => void;
+  onAdsClick?: () => void;
   onClose?: () => void;
 }
 
-export default function CreateMenu({ onClose }: CreateMenuProps) {
+export default function CreateMenu({ onPostClick, onLiveVideoClick, onAdsClick, onClose }: CreateMenuProps) {
   const [css] = useStyletron();
-  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 
   const handleItemClick = (onClick?: () => void) => {
     if (onClick) onClick();
@@ -26,10 +24,18 @@ export default function CreateMenu({ onClose }: CreateMenuProps) {
     {
       label: "Post",
       icon: <SquarePlay size={20} />,
-      onClick: () => setIsPostModalOpen(true)
+      onClick: onPostClick
     },
-    { label: "Live video", icon: <Radio size={20} /> },
-    { label: "Ad", icon: <TrendingUp size={20} /> },
+    {
+      label: "Live video",
+      icon: <Radio size={20} />,
+      onClick: onLiveVideoClick
+    },
+    {
+      label: "Ad",
+      icon: <TrendingUp size={20} />,
+      onClick: onAdsClick
+    },
     { label: "AI", icon: <Sparkles size={18} /> },
   ];
 
@@ -37,21 +43,9 @@ export default function CreateMenu({ onClose }: CreateMenuProps) {
     <div className={css({
       display: "flex",
       flexDirection: "column",
-      width: "266px",
+      width: "200px",
       backgroundColor: "#fff",
     })}>
-      {/* Header */}
-      <div className={css({
-        padding: "12px 16px",
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-        borderBottom: "1px solid #efefef"
-      })}>
-        <Plus size={24} />
-        <span className={css({ fontSize: "16px", fontWeight: 600 })}>Create</span>
-      </div>
-
       {/* Items */}
       {menuItems.map((item, index) => (
         <div
@@ -75,16 +69,6 @@ export default function CreateMenu({ onClose }: CreateMenuProps) {
           </div>
         </div>
       ))}
-
-      {isPostModalOpen && (
-        <PostModel
-          isOpen={isPostModalOpen}
-          close={() => {
-            setIsPostModalOpen(false);
-            if (onClose) onClose();
-          }}
-        />
-      )}
     </div>
   );
 }

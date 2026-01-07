@@ -10,7 +10,11 @@ import {
   ExternalLink
 } from "lucide-react";
 
-export default function MoreOptions() {
+interface MoreOptionsProps {
+  onSwitchAccount?: () => void;
+}
+
+export default function MoreOptions({ onSwitchAccount }: MoreOptionsProps) {
   const [css] = useStyletron();
 
   const primaryItems = [
@@ -28,12 +32,16 @@ export default function MoreOptions() {
   };
 
   const accountItems = [
-    { name: "Switch accounts" },
+    {
+      name: "Switch accounts",
+      onClick: onSwitchAccount
+    },
     { name: "Log out", isDistinct: true },
   ];
 
   const ItemRow = ({ item }: { item: any }) => (
     <Button
+      onClick={item.onClick}
       kind="tertiary"
       overrides={{
         BaseButton: {

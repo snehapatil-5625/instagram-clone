@@ -8,6 +8,11 @@ import SearchDrawer from "../SearchDrawer";
 import MessagesDrawer from "../MessagesDrawer";
 import CreateMenu from "../CreateMenu";
 import { Avatar } from "baseui/avatar";
+import PostModel from "../PostModal";
+import LiveVideoModal from "../LiveVideoModal";
+import CreateAdsModal from "../CreateAdsModal";
+import LoginModal from "../LoginModal";
+import { useState } from "react";
 
 interface SidebarProps {
   activeDrawer: "none" | "search" | "notifications" | "messages";
@@ -16,6 +21,10 @@ interface SidebarProps {
 
 export default function Sidebar({ activeDrawer, setActiveDrawer }: SidebarProps) {
   const [css, $theme] = useStyletron();
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [isLiveVideoModalOpen, setIsLiveVideoModalOpen] = useState(false);
+  const [isAdsModalOpen, setIsAdsModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -96,11 +105,27 @@ export default function Sidebar({ activeDrawer, setActiveDrawer }: SidebarProps)
       {/* Navigation Section */}
       <div className={css({ flex: 1, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" })}>
         {navigation.map((item, index) => (
-          <div key={index} className={css({ margin: "4px 0", width: "100%", display: "flex", justifyContent: "center" })}>
+          <div key={index} className={css({ margin: "4px", width: "100%", display: "flex", justifyContent: "center" })}>
             {item.name.toLowerCase() === "create" ? (
               <StatefulPopover
-                content={({ close }) => <CreateMenu onClose={close} />}
-                placement={PLACEMENT.rightTop}
+                content={({ close }) => (
+                  <CreateMenu
+                    onClose={close}
+                    onPostClick={() => {
+                      setIsPostModalOpen(true);
+                      close();
+                    }}
+                    onLiveVideoClick={() => {
+                      setIsLiveVideoModalOpen(true);
+                      close();
+                    }}
+                    onAdsClick={() => {
+                      setIsAdsModalOpen(true);
+                      close();
+                    }}
+                  />
+                )}
+                placement={PLACEMENT.bottom}
                 overrides={{
                   Inner: { style: { borderRadius: "12px", padding: "0", overflow: "hidden" } },
                 }}
@@ -204,18 +229,17 @@ export default function Sidebar({ activeDrawer, setActiveDrawer }: SidebarProps)
                     <div
                       className={css({
                         position: "absolute",
-                        top: "-4px",
-                        right: "-10px",
+                        top: "-2px",
+                        right: "-4px",
                         backgroundColor: "#ff3040",
                         color: "#fff",
-                        borderRadius: "10px",
-                        fontSize: "11px",
-                        padding: "2px 5px",
+                        borderRadius: "50%",
                         fontWeight: 700,
                         border: "2px solid #fff",
+                        width: "8px",
+                        height: "8px",
                       })}
                     >
-                      1
                     </div>
                   )}
                 </div>
@@ -258,7 +282,14 @@ export default function Sidebar({ activeDrawer, setActiveDrawer }: SidebarProps)
         >
           {/* More Button */}
           <StatefulPopover
-            content={() => <MoreOptions />}
+            content={({ close }) => (
+              <MoreOptions
+                onSwitchAccount={() => {
+                  setIsLoginModalOpen(true);
+                  close();
+                }}
+              />
+            )}
             placement={PLACEMENT.topRight}
             overrides={{
               Inner: { style: { borderRadius: "12px", padding: "8px", width: "266px" } },
@@ -342,6 +373,26 @@ export default function Sidebar({ activeDrawer, setActiveDrawer }: SidebarProps)
         onClose={() => setActiveDrawer("none")}
       />
       <MessagesDrawer isOpen={activeDrawer === "messages"} onClose={() => setActiveDrawer("none")} />
+
+      <PostModel
+        isOpen={isPostModalOpen}
+        close={() => setIsPostModalOpen(false)}
+      />
+
+      <LiveVideoModal
+        isOpen={isLiveVideoModalOpen}
+        onClose={() => setIsLiveVideoModalOpen(false)}
+      />
+
+      <CreateAdsModal
+        isOpen={isAdsModalOpen}
+        onClose={() => setIsAdsModalOpen(false)}
+      />
+
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </div>
   );
 }
